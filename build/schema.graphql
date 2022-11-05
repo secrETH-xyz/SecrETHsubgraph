@@ -1,5 +1,4 @@
 type SecrETH @entity {
   id: ID!
-  # pubKey: Bytes,
   cipher: Bytes
 }
