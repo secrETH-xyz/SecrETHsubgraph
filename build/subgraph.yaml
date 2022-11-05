@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: SecrETH
@@ -19,7 +19,7 @@ dataSources:
         - JoinNetworkRequest
       abis:
         - name: SecrETH
-          file: ./abis/SecrETH.json
+          file: SecrETH/abis/SecrETH.json
       eventHandlers:
         - event: DecryptionCalled(bytes32,bool)
           handler: handleDecryptionCalled
@@ -29,4 +29,4 @@ dataSources:
           handler: handleDecryptionReadyIncentivized
         - event: JoinNetworkRequest(bytes32)
           handler: handleJoinNetworkRequest
-      file: ./src/secr-eth.ts
+      file: SecrETH/SecrETH.wasm
