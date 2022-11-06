@@ -1,4 +1,4 @@
-type SecrETH @entity {
+type secreth_cipher @entity {
   id: ID!
-  cipher: Bytes
+  cipher: String
 }

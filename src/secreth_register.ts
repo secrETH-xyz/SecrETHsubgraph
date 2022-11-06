@@ -6,7 +6,7 @@ import {
   DecryptionReadyIncentivized,
   JoinNetworkRequest
 } from "../generated/SecrETH/SecrETH"
-import { SecrETH as SecrETHschema } from "../generated/schema"
+import { secreth_cipher } from "../generated/schema"
 
 
 export function handleDecryptionCalled(event: DecryptionCalled): void {
@@ -29,11 +29,11 @@ export function handleDecryptionReadyIncentivized(
   secreth.save()
 }
 
-function getSecrethInstance<T extends ethereum.Event>(event: T): SecrETHschema {
+function getSecrethInstance<T extends ethereum.Event>(event: T): secreth_cipher {
   let id = event.address.toString()
-  let secreth = SecrETHschema.load(id)
+  let secreth = secreth_cipher.load(id)
   if (!secreth) {
-    secreth = new SecrETHschema(id)
+    secreth = new secreth_cipher(id)
   }
   return secreth
 }

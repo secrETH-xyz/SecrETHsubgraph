@@ -23,8 +23,8 @@ export class DecryptionCalled__Params {
     this._event = event;
   }
 
-  get cipher(): Bytes {
-    return this._event.parameters[0].value.toBytes();
+  get cipher(): string {
+    return this._event.parameters[0].value.toString();
   }
 
   get shouldStoreDecryption(): boolean {
@@ -45,8 +45,8 @@ export class DecryptionReady__Params {
     this._event = event;
   }
 
-  get cipher(): Bytes {
-    return this._event.parameters[0].value.toBytes();
+  get cipher(): string {
+    return this._event.parameters[0].value.toString();
   }
 }
 
@@ -63,8 +63,8 @@ export class DecryptionReadyIncentivized__Params {
     this._event = event;
   }
 
-  get cipher(): Bytes {
-    return this._event.parameters[0].value.toBytes();
+  get cipher(): string {
+    return this._event.parameters[0].value.toString();
   }
 
   get storageFee(): BigInt {
@@ -147,11 +147,11 @@ export class SecrETH extends ethereum.SmartContract {
     return new SecrETH("SecrETH", address);
   }
 
-  allCiphers(param0: Bytes): SecrETH__allCiphersResult {
+  allCiphers(param0: string): SecrETH__allCiphersResult {
     let result = super.call(
       "allCiphers",
-      "allCiphers(bytes32):(address,uint256,bool,string,uint256)",
-      [ethereum.Value.fromFixedBytes(param0)]
+      "allCiphers(string):(address,uint256,bool,string,uint256)",
+      [ethereum.Value.fromString(param0)]
     );
 
     return new SecrETH__allCiphersResult(
@@ -164,12 +164,12 @@ export class SecrETH extends ethereum.SmartContract {
   }
 
   try_allCiphers(
-    param0: Bytes
+    param0: string
   ): ethereum.CallResult<SecrETH__allCiphersResult> {
     let result = super.tryCall(
       "allCiphers",
-      "allCiphers(bytes32):(address,uint256,bool,string,uint256)",
-      [ethereum.Value.fromFixedBytes(param0)]
+      "allCiphers(string):(address,uint256,bool,string,uint256)",
+      [ethereum.Value.fromString(param0)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -186,14 +186,48 @@ export class SecrETH extends ethereum.SmartContract {
     );
   }
 
-  blocksDelay(): BigInt {
-    let result = super.call("blocksDelay", "blocksDelay():(uint32)", []);
+  getBlocksDelay(): BigInt {
+    let result = super.call("getBlocksDelay", "getBlocksDelay():(uint32)", []);
 
     return result[0].toBigInt();
   }
 
-  try_blocksDelay(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("blocksDelay", "blocksDelay():(uint32)", []);
+  try_getBlocksDelay(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getBlocksDelay",
+      "getBlocksDelay():(uint32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getGeneralFee(): BigInt {
+    let result = super.call("getGeneralFee", "getGeneralFee():(uint32)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_getGeneralFee(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getGeneralFee", "getGeneralFee():(uint32)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getNumSigners(): BigInt {
+    let result = super.call("getNumSigners", "getNumSigners():(uint32)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_getNumSigners(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getNumSigners", "getNumSigners():(uint32)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -216,6 +250,21 @@ export class SecrETH extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
+  getThreshold(): BigInt {
+    let result = super.call("getThreshold", "getThreshold():(uint32)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_getThreshold(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getThreshold", "getThreshold():(uint32)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   isSigner(param0: Address): boolean {
     let result = super.call("isSigner", "isSigner(address):(bool)", [
       ethereum.Value.fromAddress(param0)
@@ -235,25 +284,10 @@ export class SecrETH extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  numSigners(): BigInt {
-    let result = super.call("numSigners", "numSigners():(uint32)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_numSigners(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("numSigners", "numSigners():(uint32)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  shareGenerationFractions(param0: Bytes, param1: BigInt): Bytes {
+  shareGenerationPartialSignatures(param0: Bytes, param1: BigInt): Bytes {
     let result = super.call(
-      "shareGenerationFractions",
-      "shareGenerationFractions(bytes32,uint256):(bytes32)",
+      "shareGenerationPartialSignatures",
+      "shareGenerationPartialSignatures(bytes32,uint256):(bytes32)",
       [
         ethereum.Value.fromFixedBytes(param0),
         ethereum.Value.fromUnsignedBigInt(param1)
@@ -263,13 +297,13 @@ export class SecrETH extends ethereum.SmartContract {
     return result[0].toBytes();
   }
 
-  try_shareGenerationFractions(
+  try_shareGenerationPartialSignatures(
     param0: Bytes,
     param1: BigInt
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
-      "shareGenerationFractions",
-      "shareGenerationFractions(bytes32,uint256):(bytes32)",
+      "shareGenerationPartialSignatures",
+      "shareGenerationPartialSignatures(bytes32,uint256):(bytes32)",
       [
         ethereum.Value.fromFixedBytes(param0),
         ethereum.Value.fromUnsignedBigInt(param1)
@@ -281,20 +315,55 @@ export class SecrETH extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
+}
 
-  threshold(): BigInt {
-    let result = super.call("threshold", "threshold():(uint32)", []);
-
-    return result[0].toBigInt();
+export class ConstructorCall extends ethereum.Call {
+  get inputs(): ConstructorCall__Inputs {
+    return new ConstructorCall__Inputs(this);
   }
 
-  try_threshold(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("threshold", "threshold():(uint32)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  get outputs(): ConstructorCall__Outputs {
+    return new ConstructorCall__Outputs(this);
+  }
+}
+
+export class ConstructorCall__Inputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+
+  get initialSigners(): Array<Address> {
+    return this._call.inputValues[0].value.toAddressArray();
+  }
+
+  get _pubKey(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get _threshold(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+
+  get _numSigners(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+
+  get _blocksDelay(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+
+  get _generalFee(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
+  }
+}
+
+export class ConstructorCall__Outputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
   }
 }
 
@@ -315,8 +384,8 @@ export class DecryptCall__Inputs {
     this._call = call;
   }
 
-  get cipher(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get cipher(): string {
+    return this._call.inputValues[0].value.toString();
   }
 
   get shouldStoreDecryption(): boolean {
@@ -379,8 +448,8 @@ export class RegisterCall__Inputs {
     this._call = call;
   }
 
-  get cipher(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get cipher(): string {
+    return this._call.inputValues[0].value.toString();
   }
 }
 
@@ -409,8 +478,8 @@ export class SubmitDecryptionCall__Inputs {
     this._call = call;
   }
 
-  get cipher(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get cipher(): string {
+    return this._call.inputValues[0].value.toString();
   }
 
   get decryptedCipher(): string {
@@ -426,36 +495,36 @@ export class SubmitDecryptionCall__Outputs {
   }
 }
 
-export class SubmitFractionalDecryptionCall extends ethereum.Call {
-  get inputs(): SubmitFractionalDecryptionCall__Inputs {
-    return new SubmitFractionalDecryptionCall__Inputs(this);
+export class SubmitPartialDecryptionCall extends ethereum.Call {
+  get inputs(): SubmitPartialDecryptionCall__Inputs {
+    return new SubmitPartialDecryptionCall__Inputs(this);
   }
 
-  get outputs(): SubmitFractionalDecryptionCall__Outputs {
-    return new SubmitFractionalDecryptionCall__Outputs(this);
+  get outputs(): SubmitPartialDecryptionCall__Outputs {
+    return new SubmitPartialDecryptionCall__Outputs(this);
   }
 }
 
-export class SubmitFractionalDecryptionCall__Inputs {
-  _call: SubmitFractionalDecryptionCall;
+export class SubmitPartialDecryptionCall__Inputs {
+  _call: SubmitPartialDecryptionCall;
 
-  constructor(call: SubmitFractionalDecryptionCall) {
+  constructor(call: SubmitPartialDecryptionCall) {
     this._call = call;
   }
 
-  get cipher(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get cipher(): string {
+    return this._call.inputValues[0].value.toString();
   }
 
-  get fractionalDecryption(): Bytes {
+  get partialDecryption(): Bytes {
     return this._call.inputValues[1].value.toBytes();
   }
 }
 
-export class SubmitFractionalDecryptionCall__Outputs {
-  _call: SubmitFractionalDecryptionCall;
+export class SubmitPartialDecryptionCall__Outputs {
+  _call: SubmitPartialDecryptionCall;
 
-  constructor(call: SubmitFractionalDecryptionCall) {
+  constructor(call: SubmitPartialDecryptionCall) {
     this._call = call;
   }
 }

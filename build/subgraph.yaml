@@ -21,11 +21,11 @@ dataSources:
         - name: SecrETH
           file: SecrETH/abis/SecrETH.json
       eventHandlers:
-        - event: DecryptionCalled(bytes32,bool)
+        - event: DecryptionCalled(string,bool)
           handler: handleDecryptionCalled
-        - event: DecryptionReady(bytes32)
+        - event: DecryptionReady(string)
           handler: handleDecryptionReady
-        - event: DecryptionReadyIncentivized(bytes32,uint256)
+        - event: DecryptionReadyIncentivized(string,uint256)
           handler: handleDecryptionReadyIncentivized
         - event: JoinNetworkRequest(bytes32)
           handler: handleJoinNetworkRequest
