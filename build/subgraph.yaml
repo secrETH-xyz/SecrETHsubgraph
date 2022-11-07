@@ -4,10 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: SecrETH
-    network: mainnet
+    network: goerli
     source:
-      address: "0x786e6201c65f133d53bdd6e8542e9c1943874cea"
+      address: "0xB3d7a60D1803BBC62EA0fe5dD993384b79E4F039"
       abi: SecrETH
+      startBlock: 7901065
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -27,6 +28,4 @@ dataSources:
           handler: handleDecryptionReady
         - event: DecryptionReadyIncentivized(string,uint256)
           handler: handleDecryptionReadyIncentivized
-        - event: JoinNetworkRequest(bytes32)
-          handler: handleJoinNetworkRequest
       file: SecrETH/SecrETH.wasm

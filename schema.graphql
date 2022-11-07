@@ -1,4 +1,14 @@
-type secreth_cipher @entity {
+type decryptionCalled @entity {
+  id: ID!
+  cipher: String
+}
+
+type decryptionReady @entity {
+  id: ID!
+  cipher: String
+}
+
+type decryptionReadyIncentivized @entity {
   id: ID!
   cipher: String
 }

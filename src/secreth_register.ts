@@ -30,7 +30,7 @@ export function handleDecryptionReadyIncentivized(
 }
 
 function getSecrethInstance<T extends ethereum.Event>(event: T): secreth_cipher {
-  let id = event.address.toString()
+  let id = event.transaction.from.toHexString() + event.transaction.hash.toHexString()
   let secreth = secreth_cipher.load(id)
   if (!secreth) {
     secreth = new secreth_cipher(id)
